@@ -20,8 +20,10 @@ module renderTop(radius, height, inset, border) {
         [radius - border, top],
         [0, top],
         [0, top - border],
-        [radius - border * 2 - border / 2, top - border],
-        [radius - border * 2, top - border - border / 2],
+        [radius - border - border / 2, top - border],
+        [radius - border, top - border - border / 2],
+        [radius - border, height],
+        [radius - border * 2, height - border],
       ]
     );
   }
