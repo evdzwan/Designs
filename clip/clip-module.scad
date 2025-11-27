@@ -84,7 +84,18 @@ module renderClip(height) {
         cube([6.5, 1, height]);
       }
 
-      // bottom reinforcement curve
+      // bottom left reinforcement curve
+      translate([16, 1.5, 0]) {
+        rotate([0, 0, 90]) {
+          rotate_extrude(angle=180) {
+            translate([.5, 0, 0]) {
+              square([1, height]);
+            }
+          }
+        }
+      }
+
+      // bottom right reinforcement curve
       translate([19, 1.5, 0]) {
         rotate([0, 0, 270]) {
           rotate_extrude(angle=180) {
@@ -106,7 +117,18 @@ module renderClip(height) {
         }
       }
 
-      // top reinforcement curve
+      // top left reinforcement curve
+      translate([16, 7.5, 0]) {
+        rotate([0, 0, 90]) {
+          rotate_extrude(angle=180) {
+            translate([.5, 0, 0]) {
+              square([1, height]);
+            }
+          }
+        }
+      }
+
+      // top right reinforcement curve
       translate([19, 7.5, 0]) {
         rotate([0, 0, 270]) {
           rotate_extrude(angle=180) {
@@ -168,8 +190,14 @@ module renderClip(height) {
       translate([20, .5, 0]) {
         cube([3, 2, height]);
       }
+
+      // top handle fill
+      translate([20, 6.5, 0]) {
+        cube([3, 2, height]);
+      }
     }
 
+    // bottom handle text
     translate([21.2, 1.5, height - .2]) {
       linear_extrude(.4) {
         text("EZ", font="Liberation Sans:style=Bold", size=1, spacing=1.2, halign="center", valign="center");
