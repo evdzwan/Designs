@@ -27,5 +27,13 @@ module renderBottom(radius, height, inset, border) {
     translate([0, 0, height / 2]) {
       curveText("STORED WITH LOVE", radius - 1, floor(radius / 20) + 2, 1.5);
     }
+
+    translate([0, 0, border - 1]) {
+      rotate([0, 0, 90]) {
+        linear_extrude(2) {
+          text("EZ", font="Liberation Sans:style=Bold", size=5, spacing=1.2, halign="center", valign="center");
+        }
+      }
+    }
   }
 }
