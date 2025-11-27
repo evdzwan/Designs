@@ -1,3 +1,5 @@
+include <../text.scad>
+
 module renderClip(height) {
   difference() {
     union() {
@@ -199,9 +201,7 @@ module renderClip(height) {
 
     // bottom handle text
     translate([21.2, 1.5, height - .2]) {
-      linear_extrude(.4) {
-        text("EZ", font="Liberation Sans:style=Bold", size=1, spacing=1.2, halign="center", valign="center");
-      }
+      logo(size=1, thickness=.4);
     }
   }
 }

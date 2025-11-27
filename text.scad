@@ -14,3 +14,9 @@ module curveText(txt, radius, size, thickness) {
     }
   }
 }
+
+module logo(size, thickness) {
+  linear_extrude(thickness) {
+    text("EZ", font="Liberation Sans:style=Bold", size=size, spacing=1.2, halign="center", valign="center");
+  }
+}
