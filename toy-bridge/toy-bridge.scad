@@ -1,5 +1,5 @@
 include <../text.scad>
-$fn = 10;
+$fn = 50;
 
 baseWidth = 40;
 baseHeight = 12;
@@ -19,11 +19,11 @@ linkSize = 11;
 armOffset = 100;
 armThickness = 8;
 
-armHoleInnerSize = 1.6;
-armHoleOuterSize = 3;
+armHoleInnerSize = 1.8;
+armHoleOuterSize = 2.4;
 
 baseHoleInnerSize = 2;
-baseHoleOuterSize = 4;
+baseHoleOuterSize = 3;
 
 // base
 difference() {
@@ -132,9 +132,9 @@ module renderArmHoles() {
     }
   }
 
-  translate([0, 50, baseHeight + 70]) {
+  translate([0, 49.2, baseHeight + 70]) {
     rotate([40, 0, 0]) {
-      cylinder(h=10, d=6);
+      cylinder(h=10, d=5);
     }
   }
 }
@@ -144,8 +144,8 @@ module renderArmHole(height) {
     polygon(
       [
         [0, 0],
-        [armHoleOuterSize, 0],
-        [armHoleOuterSize, height / 2],
+        [armHoleInnerSize, 0],
+        [armHoleInnerSize, height / 2],
         [armHoleInnerSize, height / 2 + baseRadius],
         [armHoleInnerSize, height - baseRadius],
         [armHoleOuterSize, height],
@@ -156,9 +156,9 @@ module renderArmHole(height) {
 }
 
 module renderArmPin() {
-  translate([0, 42, baseHeight + 72]) {
+  translate([0, 42, baseHeight + 72.5]) {
     rotate([0, 0, 0]) {
-      cylinder(h=armHoleOuterSize, d=2);
+      cylinder(h=armHoleOuterSize, d=1.6);
     }
   }
 }
@@ -261,8 +261,8 @@ module renderBaseHole() {
     polygon(
       [
         [0, 0],
-        [baseHoleOuterSize, 0],
-        [baseHoleOuterSize, baseHeight / 2],
+        [baseHoleOuterSize + 1, 0],
+        [baseHoleOuterSize + 1, baseHeight / 2],
         [baseHoleInnerSize, baseHeight / 2 + baseRadius],
         [baseHoleInnerSize, baseHeight - baseRadius],
         [baseHoleOuterSize, baseHeight],
