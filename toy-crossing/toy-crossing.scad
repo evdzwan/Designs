@@ -50,18 +50,11 @@ difference() {
   }
 
   union() {
-    renderBuildingInset();
+    renderBuildingInsets();
     rotate([0, 0, 270]) {
-      renderBuildingInset();
+      renderBuildingInsets();
     }
   }
-
-  //   union() {
-  //     renderBuildingChamfers();
-  //     rotate([0, 0, 270]) {
-  //       renderBuildingChamfers();
-  //     }
-  //   }
 }
 
 difference() {
@@ -136,12 +129,48 @@ module renderBuildingChamferRight(length) {
   }
 }
 
-module renderBuildingInset() {
+module renderBuildingInsets() {
   translate([0, 0, (buildingHeight + baseHeight) / 2]) {
     cube([buildingWidth - buildingWall * 2, buildingLength, buildingHeight], center=true);
     translate([0, 0, buildingHeight / 2]) {
       rotate([90, 0, 0]) {
         cylinder(h=buildingLength, d=buildingWidth - buildingWall * 2, center=true);
+      }
+    }
+
+    translate([buildingLength / 4, 44, buildingHeight / 2 - 8]) {
+      rotate([0, 90, 0]) {
+        cylinder(h=buildingLength / 4, d=12, center=true);
+      }
+    }
+
+    translate([buildingLength / 4, -35, buildingHeight / 2 - 8]) {
+      rotate([0, 90, 0]) {
+        cylinder(h=buildingLength / 4, d=12, center=true);
+      }
+    }
+
+    translate([buildingLength / 4, -53, buildingHeight / 2 - 8]) {
+      rotate([0, 90, 0]) {
+        cylinder(h=buildingLength / 4, d=12, center=true);
+      }
+    }
+
+    translate([-buildingLength / 4, -44, buildingHeight / 2 - 8]) {
+      rotate([0, 90, 0]) {
+        cylinder(h=buildingLength / 4, d=12, center=true);
+      }
+    }
+
+    translate([-buildingLength / 4, 35, buildingHeight / 2 - 8]) {
+      rotate([0, 90, 0]) {
+        cylinder(h=buildingLength / 4, d=12, center=true);
+      }
+    }
+
+    translate([-buildingLength / 4, 53, buildingHeight / 2 - 8]) {
+      rotate([0, 90, 0]) {
+        cylinder(h=buildingLength / 4, d=12, center=true);
       }
     }
   }
@@ -172,7 +201,6 @@ module renderTrack() {
 
 module renderTrackChamfers() {
   length = (baseLength - buildingLength) / 2;
-  //   length = (baseLength - baseWidth) / 2;
   translate([0, -baseLength / 2 + length, 0]) {
     renderTrackChamferLeft(length);
   }
