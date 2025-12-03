@@ -1,25 +1,37 @@
 $fn = 10;
 
-translate([-35, 0, 0]) {
-  renderBase();
-}
+difference() {
+  union() {
+    translate([-35, 0, 0]) {
+      renderBase();
+    }
 
-translate([-35 - 8 / 2, 100, 0]) {
-  renderArm(-1);
-}
+    translate([-35 - 8 / 2, 100, 0]) {
+      renderArm(-1);
+    }
 
-translate([-30, 0, 2]) {
-  renderFrontCables(-1);
-  renderRearCable(-1);
-}
+    translate([-30, 0, 2]) {
+      renderFrontCables(-1);
+      renderRearCable(-1);
+    }
 
-translate([35 - 8 / 2, 100, 0]) {
-  renderArm(1);
-}
+    translate([35 - 8 / 2, 100, 0]) {
+      renderArm(1);
+    }
 
-translate([30, 0, 2]) {
-  renderFrontCables(1);
-  renderRearCable(1);
+    translate([30, 0, 2]) {
+      renderFrontCables(1);
+      renderRearCable(1);
+    }
+  }
+  union() {
+    translate([-12.5, 0, 0]) {
+      renderRail();
+    }
+    translate([12.5, 0, 0]) {
+      renderRail();
+    }
+  }
 }
 
 module renderArm(multiplier) {
@@ -64,6 +76,23 @@ module renderRearCable(multiplier) {
   translate([0, 210, 0]) {
     rotate([37.4, -9 * multiplier, 0]) {
       cylinder(h=105, d=4);
+    }
+  }
+}
+
+module renderRail() {
+  translate([0, 220 + .5, 12]) {
+    rotate([90, 0, 0]) {
+      linear_extrude(221) {
+        polygon(
+          [
+            [-7 / 2 - 1, 4],
+            [-7 / 2 + 1, -4],
+            [7 / 2 - 1, -4],
+            [7 / 2 + 1, 4],
+          ]
+        );
+      }
     }
   }
 }
