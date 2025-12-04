@@ -1,4 +1,4 @@
-$fn = 50;
+$fn = 100;
 
 buildingLength = 140;
 buildingHeight = 40;
@@ -9,10 +9,10 @@ buildingLightWidth = 8;
 buildingRoofHeight = 6;
 buildingRoofWidth = 12;
 buildingInsetDepth = 1;
-buildingLinkLength = 10;
+buildingLinkLength = 8;
 buildingLinkOffset = 45;
 buildingLinkWidth = 2;
-buildingLinkDepth = 6;
+buildingLinkDepth = 4;
 buildingWindowSize = 12;
 
 topTrackLength = 60;
@@ -38,6 +38,10 @@ difference() {
     }
   }
   renderTrackLinks();
+  renderBuildingLinks();
+  rotate([0, 0, 90]) {
+    renderBuildingLinks();
+  }
 }
 
 difference() {
@@ -58,17 +62,21 @@ module renderBuilding() {
         cylinder(h=buildingLength, d=buildingWidth, center=true);
       }
     }
-    renderBuildingLinks();
   }
 }
 
 module renderBuildingLinks() {
+  spacing = .4;
+  insetLength = buildingLinkLength + spacing;
+  insetWidth = buildingLinkWidth + spacing / 2;
+  insetDepth = buildingLinkDepth + spacing;
+
   for (y = [-1:1]) {
     if (y != 0) {
       for (x = [-1:1]) {
         if (x != 0) {
-          translate([x * -(buildingWidth - buildingLinkWidth) / 2 + x * (buildingWall - buildingLinkWidth), y * buildingLinkOffset, -buildingHeight / 2]) {
-            cube([buildingLinkWidth, buildingLinkLength, buildingLinkDepth], center=true);
+          translate([x * -(buildingWidth - insetWidth) / 2 + x * (buildingWall - insetWidth), y * buildingLinkOffset, -(buildingHeight - insetDepth) / 2]) {
+            cube([insetWidth, insetLength, insetDepth], center=true);
           }
         }
       }

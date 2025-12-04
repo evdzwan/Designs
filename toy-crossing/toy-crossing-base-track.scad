@@ -1,4 +1,4 @@
-$fn = 50;
+$fn = 100;
 
 trackWidth = 40;
 trackHeight = 12.2;
@@ -8,10 +8,10 @@ trackChamfer = 1;
 buildingLength = 140;
 buildingWidth = 46;
 buildingInsetDepth = 1;
-buildingLinkLength = 10;
+buildingLinkLength = 8;
 buildingLinkOffset = 45;
 buildingLinkWidth = 2;
-buildingLinkDepth = 6;
+buildingLinkDepth = 4;
 
 linkOffset = 12;
 linkWidth = 6;
@@ -24,8 +24,10 @@ railDepth = 4;
 difference() {
   union() {
     renderTrack();
+    renderBuildingLinks();
     rotate([0, 0, 90]) {
       renderTrack();
+      renderBuildingLinks();
     }
   }
 
@@ -33,13 +35,6 @@ difference() {
     renderRails();
     rotate([0, 0, 90]) {
       renderRails();
-    }
-  }
-
-  union() {
-    renderBuildingLinks();
-    rotate([0, 0, 90]) {
-      renderBuildingLinks();
     }
   }
 }
@@ -54,7 +49,8 @@ module renderTrack() {
       renderMaleLink();
     }
     renderFemaleLink();
-    renderChamfers();
+    renderBottomChamfers();
+    renderTopChamfers();
   }
 }
 
@@ -80,12 +76,106 @@ module renderMaleLink() {
   }
 }
 
-module renderChamfers() {
-  length = (trackLength - trackWidth) / 2 + trackChamfer;
-  union() {
-    translate([-trackWidth / 2, -trackLength / 2 + length, trackHeight / 2]) {
+module renderBottomChamfers() {
+  renderLeftFront();
+  renderLeftRear();
+  rotate([0, 0, 180]) {
+    renderLeftFront();
+    renderLeftRear();
+  }
+
+  renderRightFront();
+  renderRightRear();
+  rotate([0, 0, 180]) {
+    renderRightFront();
+    renderRightRear();
+  }
+
+  module renderLeftFront() {
+    length = (trackLength - buildingLength) / 2;
+    translate([-trackWidth / 2, -trackLength / 2 + length, -trackHeight / 2]) {
       rotate([90, 0, 0]) {
-        linear_extrude(length + 1) {
+        linear_extrude(length) {
+          polygon(
+            [
+              [0, trackChamfer],
+              [trackChamfer, 0],
+              [0, 0],
+            ]
+          );
+        }
+      }
+    }
+  }
+
+  module renderLeftRear() {
+    length = (trackLength - buildingWidth) / 2;
+    translate([-buildingWidth / 2, -trackLength / 2 + length + trackChamfer, -trackHeight / 2]) {
+      rotate([90, 0, 0]) {
+        linear_extrude(length + trackChamfer) {
+          polygon(
+            [
+              [0, trackChamfer],
+              [trackChamfer, 0],
+              [0, 0],
+            ]
+          );
+        }
+      }
+    }
+  }
+
+  module renderRightFront() {
+    length = (trackLength - buildingLength) / 2;
+    translate([trackWidth / 2, -trackLength / 2 + length, -trackHeight / 2]) {
+      rotate([90, 0, 0]) {
+        linear_extrude(length) {
+          polygon(
+            [
+              [0, trackChamfer],
+              [0, 0],
+              [-trackChamfer, 0],
+            ]
+          );
+        }
+      }
+    }
+  }
+
+  module renderRightRear() {
+    length = (trackLength - buildingWidth) / 2;
+    translate([buildingWidth / 2, -trackLength / 2 + length + trackChamfer, -trackHeight / 2]) {
+      rotate([90, 0, 0]) {
+        linear_extrude(length + trackChamfer) {
+          polygon(
+            [
+              [0, trackChamfer],
+              [0, 0],
+              [-trackChamfer, 0],
+            ]
+          );
+        }
+      }
+    }
+  }
+}
+
+module renderTopChamfers() {
+  renderLeft();
+  rotate([0, 0, 180]) {
+    renderLeft();
+  }
+
+  renderRight();
+  rotate([0, 0, 180]) {
+    renderRight();
+  }
+
+  module renderLeft() {
+    length = (trackLength - trackWidth) / 2;
+    translate([-trackWidth / 2, -trackLength / 2 + length + trackChamfer, trackHeight / 2]) {
+      rotate([90, 0, 0]) {
+        linear_extrude(length + trackChamfer) {
           polygon(
             [
               [0, 0],
@@ -96,14 +186,18 @@ module renderChamfers() {
         }
       }
     }
-    translate([trackWidth / 2, -trackLength / 2 + length, trackHeight / 2]) {
+  }
+
+  module renderRight() {
+    length = (trackLength - trackWidth) / 2;
+    translate([trackWidth / 2, -trackLength / 2 + length + trackChamfer, trackHeight / 2]) {
       rotate([90, 0, 0]) {
-        linear_extrude(length + 1) {
+        linear_extrude(length + trackChamfer) {
           polygon(
             [
-              [-trackChamfer, 0],
               [0, 0],
               [0, -trackChamfer],
+              [-trackChamfer, 0],
             ]
           );
         }
@@ -113,22 +207,18 @@ module renderChamfers() {
 }
 
 module renderBuildingLinks() {
-  spacing = .4;
-  insetLength = buildingLinkLength + spacing;
-  insetWidth = buildingLinkWidth + spacing / 2;
-  insetDepth = buildingLinkDepth + spacing;
   for (y = [-1:1]) {
     if (y != 0) {
       for (x = [-1:1]) {
         if (x != 0) {
-          translate([y * buildingLinkOffset, x * (buildingWidth / 2 - insetWidth / 2 - (1 - spacing / 2)), trackHeight / 2 - insetDepth]) {
-            linear_extrude(insetDepth + 1) {
+          translate([y * buildingLinkOffset, x * (buildingWidth / 2 - (buildingWidth - trackWidth) / 4 - buildingLinkWidth / 4), trackHeight / 2 - buildingInsetDepth]) {
+            linear_extrude(buildingLinkDepth) {
               polygon(
                 [
-                  [-insetLength / 2, -insetWidth / 2],
-                  [insetLength / 2, -insetWidth / 2],
-                  [insetLength / 2, insetWidth / 2],
-                  [-insetLength / 2, insetWidth / 2],
+                  [-buildingLinkLength / 2, -buildingLinkWidth / 2],
+                  [buildingLinkLength / 2, -buildingLinkWidth / 2],
+                  [buildingLinkLength / 2, buildingLinkWidth / 2],
+                  [-buildingLinkLength / 2, buildingLinkWidth / 2],
                 ]
               );
             }
