@@ -10,7 +10,7 @@ baseSupport = 6;
 
 trackChamfer = 1;
 trackWidth = 40;
-trackHeight = 11.2;
+trackHeight = 12;
 
 topTrackLength = 60;
 topTrackLinkLength = 8;

@@ -14,8 +14,8 @@ buildingLinkWidth = 2;
 buildingLinkDepth = 4;
 
 linkOffset = 12;
-linkWidth = 6;
-linkSize = 11;
+linkWidth = 7;
+linkSize = 12;
 
 railWidth = 7;
 railOffset = 4;

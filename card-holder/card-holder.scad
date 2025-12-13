@@ -23,31 +23,27 @@ rotate([90, 0, 0]) {
     cube([2, width, height]);
   }
 
-  translate([-11, 0, height]) {
+  translate([-13, 0, height]) {
     difference() {
+      rotate([-90, 0, 0]) {
+        cylinder(h=width, d=24);
+      }
+
       rotate([-90, 0, 0]) {
         cylinder(h=width, d=20);
       }
 
-      rotate([-90, 0, 0]) {
-        cylinder(h=width, d=16);
-      }
-
-      translate([-8, 0, -10]) {
-        cube([16, width, 10]);
+      translate([-10, 0, -12]) {
+        cube([24, width, 12]);
       }
     }
   }
 
-  translate([-21, 0, height - 10]) {
+  translate([-25, 0, height - 10]) {
     cube([2, width, 10]);
   }
 
   translate([1, 0, 0]) {
     cube([2, width, 8]);
-  }
-
-  translate([-1, 0, -1]) {
-    cube([2, 2, 9]);
   }
 }
