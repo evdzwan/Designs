@@ -1,67 +1,41 @@
-module renderBox(size, height, bottom, radius, insetHeight) {
-  spacing = .4;
-  slotSize = size - radius * 2 - spacing * 2;
+module renderBox(sizeX, sizeY, sizeZ, radius, spacing) {
+  separatorSizeX = sqrt((sizeX - radius * 2) * (sizeX - radius * 2) + (sizeY - radius * 2) * (sizeY - radius * 2));
+  separatorSizeY = 2;
+  separatorSizeZ = sizeZ + radius;
 
-  union() {
+  translate([0, 0, sizeZ / 2 + radius]) {
     difference() {
-      renderHull(size, height, radius, insetHeight);
-      translate([0, 0, bottom]) {
+      renderHull(sizeX, sizeY, sizeZ, radius);
+
+      translate([0, 0, sizeZ]) {
+        renderHull(sizeX, sizeY, sizeZ, radius);
+      }
+
+      translate([0, 0, sizeZ / 2]) {
+        cube([sizeX + 1, sizeY + 1, radius], center=true);
+      }
+
+      translate([0, 0, radius / 2]) {
         scale([.9, .9, 1]) {
-          renderHull(size, height, radius, insetHeight);
+          renderHull(sizeX, sizeY, sizeZ, radius);
         }
       }
 
-      translate([0, 0, height / 2 - insetHeight / 2 + .5]) {
-        scale([.9, .9, 1]) {
-          cube([size, size - radius * 2, insetHeight + 1], center=true);
-          cube([size - radius * 2, size, insetHeight + 1], center=true);
+      translate([0, 0, 0]) {
+        rotate([0, 0, 45]) {
+          cube([separatorSizeX + spacing * 2, separatorSizeY + spacing * 2, separatorSizeZ], center=true);
         }
-      }
-    }
-
-    translate([0, 0, -(height / 2 + insetHeight / 2)]) {
-      scale([.9, .9, 1]) {
-        cube([slotSize + radius * 2, slotSize, insetHeight], center=true);
-        cube([slotSize, slotSize + radius * 2, insetHeight], center=true);
-
-        for (y = [-1:1]) {
-          if (y != 0) {
-            for (x = [-1:1]) {
-              if (x != 0) {
-                translate([x * slotSize / 2, y * slotSize / 2, 0]) {
-                  cylinder(r1=radius, r2=radius * 1.5, h=insetHeight, center=true);
-                }
-              }
-            }
-          }
+        rotate([0, 0, 315]) {
+          cube([separatorSizeX + spacing * 2, separatorSizeY + spacing * 2, separatorSizeZ], center=true);
         }
       }
     }
   }
+}
 
-  module renderHull(size, height, radius, insetHeight) {
-    union() {
-      cube([size - radius * 2, size - radius * 2, height], center=true);
-
-      for (y = [-1:1]) {
-        if (y != 0) {
-          for (x = [-1:1]) {
-            if (x != 0) {
-              translate([x * (size - 2 * radius) / 2, y * (size - 2 * radius) / 2, 0]) {
-                cylinder(h=height, r=radius, center=true);
-              }
-
-              translate([x * (size - 2 * radius) / 2, 0, 0]) {
-                cube([radius * 1.5, size - 2 * radius, height], center=true);
-              }
-
-              translate([0, y * (size - 2 * radius) / 2, 0]) {
-                cube([size - 2 * radius, radius * 1.5, height], center=true);
-              }
-            }
-          }
-        }
-      }
-    }
+module renderHull(sizeX, sizeY, sizeZ, radius) {
+  minkowski() {
+    cube([sizeX - radius * 2, sizeY - radius * 2, sizeZ], center=true);
+    sphere(r=radius);
   }
 }

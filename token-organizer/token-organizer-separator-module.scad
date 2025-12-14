@@ -1,49 +1,43 @@
-module renderSeparator(size, height, bottom, thickness, radius, insetHeight) {
-  availableSize = size - radius * 2;
-  separatorHeight = height - bottom - insetHeight;
-  separatorLength = sqrt(availableSize * availableSize + availableSize * availableSize);
-  spacing = .4;
-  chamfer = 1;
+module renderSeparator(boxSizeX, boxSizeY, boxSizeZ, boxRadius, spacing) {
+  sizeX = sqrt((boxSizeX - boxRadius * 2) * (boxSizeX - boxRadius * 2) + (boxSizeY - boxRadius * 2) * (boxSizeY - boxRadius * 2));
+  sizeY = 2;
+  sizeZ = boxSizeZ - boxRadius / 2 - spacing;
 
-  scale([.9, .9, 1]) {
+  insetSizeX = sizeY;
+  insetSizeY = sizeY;
+  insetSizeZ = sizeZ / 2;
+
+  translate([0, 0, (sizeZ + boxRadius) / 2]) {
+    difference() {
+      cube([sizeX, sizeY, sizeZ], center=true);
+      translate([0, 0, insetSizeZ / 2]) {
+        cube([insetSizeX + spacing * 2, insetSizeY + spacing * 2, insetSizeZ + spacing], center=true);
+      }
+    }
+
     difference() {
       union() {
-        cube([separatorLength + radius, thickness, separatorHeight - spacing], center=true);
+        translate([-sizeX / 2, 0, 0]) {
+          cylinder(h=sizeZ, r=boxRadius, center=true);
+        }
 
-        for (x = [-1:1]) {
-          if (x != 0) {
-            translate([x * separatorLength / 2, 0, -(separatorHeight - spacing) / 2]) {
-              rotate([0, 0, x * -90]) {
-                rotate_extrude(angle=180) {
-                  polygon(
-                    [
-                      [0, 0],
-                      [radius - spacing - chamfer, 0],
-                      [radius - spacing, chamfer],
-                      [radius - spacing, separatorHeight - spacing - chamfer],
-                      [radius - spacing - chamfer, separatorHeight - spacing],
-                      [0, separatorHeight - spacing],
-                    ]
-                  );
-                }
-              }
-            }
-          }
+        translate([sizeX / 2, 0, 0]) {
+          cylinder(h=sizeZ, r=boxRadius, center=true);
         }
       }
 
-      rotate([90, 0, 0]) {
-        linear_extrude(height=thickness + 1, center=true) {
-          polygon(
-            [
-              [-(thickness + spacing * 2) / 2, -spacing],
-              [(thickness + spacing * 2) / 2, -spacing],
-              [(thickness + spacing * 2) / 2, (separatorHeight - spacing) / 2 - chamfer],
-              [(thickness + spacing * 2) / 2 + chamfer * 2, (separatorHeight - spacing) / 2 + chamfer],
-              [-(thickness + spacing * 2) / 2 - chamfer * 2, (separatorHeight - spacing) / 2 + chamfer],
-              [-(thickness + spacing * 2) / 2, (separatorHeight - spacing) / 2 - chamfer],
-            ]
-          );
+      rotate([0, 0, 45]) {
+        difference() {
+          cube([boxSizeX, boxSizeY, boxSizeZ], center=true);
+
+          translate([0, 0, boxRadius / 2]) {
+            scale([.895, .895, 1]) {
+              minkowski() {
+                cube([boxSizeX - boxRadius * 2, boxSizeY - boxRadius * 2, boxSizeZ], center=true);
+                sphere(r=boxRadius);
+              }
+            }
+          }
         }
       }
     }
