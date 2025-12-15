@@ -2,26 +2,14 @@ include <token-organizer-box-module.scad>
 include <token-organizer-separator-module.scad>
 $fn = 50;
 
-boxSizeX = 100;
-boxSizeY = 100;
-boxSizeZ = 30;
-boxRadius = 5;
+sizeX = 100;
+sizeY = 100;
+sizeZ = 30;
 spacing = .4;
+thickness = 2;
+radius = 4;
+inset = 4;
 
-color("olive") {
-  renderBox(boxSizeX, boxSizeY, boxSizeZ, boxRadius, spacing);
-}
-color("cyan") {
-  rotate([0, 0, 45]) {
-    renderSeparator(boxSizeX, boxSizeY, boxSizeZ, boxRadius, spacing);
-  }
-}
-color("magenta") {
-  rotate([0, 0, 315]) {
-    translate([0, 0, boxSizeZ + boxRadius / 2 - spacing]) {
-      scale([1, 1, -1]) {
-        renderSeparator(boxSizeX, boxSizeY, boxSizeZ, boxRadius, spacing);
-      }
-    }
-  }
-}
+renderBox(sizeX, sizeY, sizeZ, radius, thickness, inset, spacing);
+translate([sizeX / 2, sizeY / 2, inset + radius / 2]) rotate([0, 0, 45]) renderSeparator(sqrt(sizeX * sizeX + sizeY * sizeY), thickness, sizeZ - inset - spacing - radius / 2, radius, spacing);
+translate([sizeX / 2, sizeY / 2, sizeZ - spacing]) rotate([0, 0, 315]) scale([1, 1, -1]) renderSeparator(sqrt(sizeX * sizeX + sizeY * sizeY), thickness, sizeZ - inset - spacing - radius / 2, radius, spacing);

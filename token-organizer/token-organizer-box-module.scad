@@ -1,41 +1,30 @@
-module renderBox(sizeX, sizeY, sizeZ, radius, spacing) {
-  separatorSizeX = sqrt((sizeX - radius * 2) * (sizeX - radius * 2) + (sizeY - radius * 2) * (sizeY - radius * 2));
-  separatorSizeY = 2;
-  separatorSizeZ = sizeZ + radius;
+include <token-organizer-separator-module.scad>
 
-  translate([0, 0, sizeZ / 2 + radius]) {
+module renderBox(x, y, z, r, t, i, s) {
+  translate([0, 0, i]) {
     difference() {
-      renderHull(sizeX, sizeY, sizeZ, radius);
-
-      translate([0, 0, sizeZ]) {
-        renderHull(sizeX, sizeY, sizeZ, radius);
-      }
-
-      translate([0, 0, sizeZ / 2]) {
-        cube([sizeX + 1, sizeY + 1, radius], center=true);
-      }
-
-      translate([0, 0, radius / 2]) {
-        scale([.9, .9, 1]) {
-          renderHull(sizeX, sizeY, sizeZ, radius);
-        }
-      }
-
-      translate([0, 0, 0]) {
-        rotate([0, 0, 45]) {
-          cube([separatorSizeX + spacing * 2, separatorSizeY + spacing * 2, separatorSizeZ], center=true);
-        }
-        rotate([0, 0, 315]) {
-          cube([separatorSizeX + spacing * 2, separatorSizeY + spacing * 2, separatorSizeZ], center=true);
-        }
-      }
+      renderBase(x, y, z, r);
+      translate([r / 2, r / 2, r / 2]) renderBase(x - r, y - r, z, r);
+      translate([x / 2, y / 2, r / 2]) rotate([0, 0, 45]) renderSeparator(sqrt(x * x + y * y) + s * 2, t + s * 2, z - r / 2, r, s);
+      translate([x / 2, y / 2, r / 2]) rotate([0, 0, 315]) renderSeparator(sqrt(x * x + y * y) + s * 2, t + s * 2, z - r / 2, r, s);
     }
+
+    translate([r - s, r - s, -i]) renderBase(x - (r - s) * 2, y - (r - s) * 2, i, r);
   }
 }
 
-module renderHull(sizeX, sizeY, sizeZ, radius) {
-  minkowski() {
-    cube([sizeX - radius * 2, sizeY - radius * 2, sizeZ], center=true);
-    sphere(r=radius);
+module renderBase(x, y, z, r) {
+  union() {
+    translate([r, r, 0]) cube([x - r * 2, y - r * 2, z]);
+
+    translate([r, r, 0]) cylinder(r=r, h=z);
+    translate([x - r, r, 0]) cylinder(r=r, h=z);
+    translate([x - r, y - r, 0]) cylinder(r=r, h=z);
+    translate([r, y - r, 0]) cylinder(r=r, h=z);
+
+    translate([r, 0, 0]) cube([x - r * 2, r, z]);
+    translate([r, y - r, 0]) cube([x - r * 2, r, z]);
+    translate([0, r, 0]) cube([r, y - r * 2, z]);
+    translate([x - r, r, 0]) cube([r, y - r * 2, z]);
   }
 }
