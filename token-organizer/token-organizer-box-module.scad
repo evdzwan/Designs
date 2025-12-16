@@ -5,8 +5,8 @@ module renderBox(x, y, z, r, t, i, s) {
     difference() {
       renderBase(x, y, z, r);
       translate([r / 2, r / 2, r / 2]) renderBase(x - r, y - r, z, r);
-      translate([x / 2, y / 2, r / 2]) rotate([0, 0, 45]) renderSeparator(sqrt(x * x + y * y) + s * 2, t + s * 2, z - r / 2, r, s);
-      translate([x / 2, y / 2, r / 2]) rotate([0, 0, 315]) renderSeparator(sqrt(x * x + y * y) + s * 2, t + s * 2, z - r / 2, r, s);
+      translate([x / 2, y / 2, r / 2 - r / 4]) rotate([0, 0, 45]) renderSeparator(sqrt(x * x + y * y) + s * 2, t + s * 2, z - r / 2 + r / 4, r, s);
+      translate([x / 2, y / 2, r / 2 - r / 4]) rotate([0, 0, 315]) renderSeparator(sqrt(x * x + y * y) + s * 2, t + s * 2, z - r / 2 + r / 4, r, s);
     }
 
     translate([r - s, r - s, -i]) renderBase(x - (r - s) * 2, y - (r - s) * 2, i, r);

@@ -9,4 +9,4 @@ thickness = 2;
 radius = 4;
 inset = 4;
 
-renderSeparator(sqrt(sizeX * sizeX + sizeY * sizeY), thickness, sizeZ - inset - spacing - radius / 2, radius, spacing);
+renderSeparator(sqrt(sizeX * sizeX + sizeY * sizeY), thickness, sizeZ - inset - spacing - radius / 2 + radius / 4, radius, spacing);
