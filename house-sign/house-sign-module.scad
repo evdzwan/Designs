@@ -29,6 +29,22 @@ module renderFront() {
       translate([190, 30, 0]) text("Posthumus & Sprenkeling", font="Calibri", size=10, spacing=1.1, valign="center");
     }
   }
+
+  union() {
+    translate([259.6, 122, 0]) cube([1, 10, 5]);
+    translate([225.8, 95, 0]) cube([1, 10, 5]);
+    translate([198.8, 70, 0]) cube([1, 10, 5]);
+    translate([238.8, 70, 0]) cube([1, 10, 5]);
+    translate([193, 32, 0]) cube([1, 10, 5]);
+    translate([200.4, 31, 0]) cube([1, 10, 5]);
+    translate([264, 33, 0]) cube([1, 10, 5]);
+    translate([264, 18, 0]) cube([1, 10, 5]);
+    translate([284.2, 31, 0]) cube([1, 10, 5]);
+    translate([296.8, 31, 0]) cube([1, 10, 5]);
+    translate([318.4, 31, 0]) cube([1, 10, 5]);
+    translate([340, 31, 0]) cube([1, 10, 5]);
+    translate([340, 16, 0]) cube([1, 10, 5]);
+  }
 }
 
 module renderOffsets() {
