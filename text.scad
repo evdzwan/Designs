@@ -1,5 +1,5 @@
 module curveText(txt, radius, size, thickness) {
-  spacing = size;
+  spacing = size * 1.6;
   for (i = [0:len(txt) - 1]) {
     char = str(txt[i]);
     angle = i * spacing - (len(txt) - 1) * spacing / 2;
