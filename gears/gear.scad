@@ -1,11 +1,10 @@
 $fn = 50;
 
 height = 5;
-radius = 10;
-holeGap = 20;
-holeRadius = 3;
+radius = 24;
+holeRadius = 3.1;
 holeChamfer = .6;
-teeth = radius - 2;
+teeth = ceil(radius) - 2;
 
 difference() {
   intersection() {
@@ -43,7 +42,7 @@ difference() {
 
   if (radius >= 18) {
     for (a = [0:3]) {
-      rotate([0, 0, a * 90]) translate([10, 0, 0]) cylinder(r=1, h=height);
+      rotate([0, 0, a * 90]) translate([10, 0, 0]) cylinder(r=1.1, h=height);
     }
   }
 }

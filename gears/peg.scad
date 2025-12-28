@@ -1,7 +1,7 @@
 $fn = 50;
 
 size = 5;
-radius = 3;
+radius = 2.9;
 length = size * 2 + 2;
 chamfer = .6;
 
