@@ -1,75 +1,42 @@
-include <../shapes.scad>
+use <../shapes.scad>
 $fn = 50;
 
-height = 5;
-connectorSize = 4;
-radius = 4;
-sizeX = 2;
-sizeY = 1;
+renderBase(holes=[4, 4], gap=20, height=4);
 
-holeGap = 20;
-holeRadius = 3;
-holeChamfer = .6;
-holesX = sizeX * 3;
-holesY = sizeY * 3;
+module renderBase(holes, gap, height) {
+  dimensions = [holes[0] * gap, holes[1] * gap];
+  connectorSize = 6;
+  holeRadius = 2;
 
-dimX = holesX * holeGap;
-dimY = holesY * holeGap;
-
-difference() {
-  translate([-dimX / 2, -dimY / 2, 0]) {
+  translate([-dimensions[0] / 2, -dimensions[1] / 2, 0]) {
     difference() {
-      roundedCube([dimX, dimY, height], radius);
+      roundedCube([dimensions[0], dimensions[1], height], radius=height);
 
-      for (y = [0:holesY - 1]) {
-        for (x = [0:holesX - 1]) {
-          translate([x * holeGap + holeGap / 2, y * holeGap + holeGap / 2, 0]) {
-            rotate_extrude() {
-              polygon(
-                [
-                  [0, 0],
-                  [holeRadius + holeChamfer, 0],
-                  [holeRadius + holeChamfer, 1],
-                  [holeRadius, 2],
-                  [holeRadius, height - 2],
-                  [holeRadius + holeChamfer, height - 1],
-                  [holeRadius + holeChamfer, height],
-                  [0, height],
-                ]
-              );
-            }
-          }
-        }
-      }
+      for (y = [0:holes[1] - 1])
+        for (x = [0:holes[0] - 1])
+          translate([(x + .5) * gap, (y + .5) * gap, -.5]) cylinder(r=holeRadius + .1, h=height + 1);
+
+      translate([dimensions[0] / 2, 0, -.5]) rotate([0, 0, 90]) renderConnector(connectorSize + .1, height + 1);
+      translate([0, dimensions[1] / 2, -.5]) renderConnector(connectorSize, height + 1);
+
+      for (y = [1:holes[1] - 1])
+        for (x = [1:holes[0] - 1])
+          translate([x * gap, y * gap, -.5]) cylinder(r=gap / 2 - holeRadius, h=height + 1);
     }
+
+    translate([dimensions[0] / 2, dimensions[1], 0]) rotate([0, 0, 90]) renderConnector(connectorSize, height);
+    translate([dimensions[0], dimensions[1] / 2, 0]) renderConnector(connectorSize, height);
   }
 
-  for (x = [0:sizeX - 1]) {
-    translate([-dimX / 2 + (x + .5) * dimX / sizeX, -dimY / 2, 0]) rotate([0, 0, 90]) renderConnector(connectorSize + .1);
-  }
-
-  for (y = [0:sizeY - 1]) {
-    translate([-dimX / 2, -dimY / 2 + (y + .5) * dimY / sizeY, 0]) renderConnector(connectorSize + .1);
-  }
-}
-
-for (x = [0:sizeX - 1]) {
-  translate([-dimX / 2 + (x + .5) * dimX / sizeX, dimY / 2, 0]) rotate([0, 0, 90]) renderConnector(connectorSize);
-}
-
-for (y = [0:sizeY - 1]) {
-  translate([dimX / 2, -dimY / 2 + (y + .5) * dimY / sizeY, 0]) renderConnector(connectorSize);
-}
-
-module renderConnector(size) {
-  linear_extrude(height) {
-    polygon(
-      [
-        [0, -(size * 2 - 2)],
-        [0, size * 2 - 2],
-        [size, size * 2],
-        [size, -size * 2],
-      ]
-    );
+  module renderConnector(size, height) {
+    linear_extrude(height)
+      polygon(
+        [
+          [0, -(size - 1)],
+          [0, size - 1],
+          [size, size],
+          [size, -size],
+        ]
+      );
   }
 }
