@@ -1,9 +1,9 @@
 $fn = 50;
 
-renderGear(radius=30, height=4, type="spiral");
+renderGear(radius=20, height=4, type="spiral");
 
 module renderGear(radius, height, type) {
-  pegHeight = 2;
+  pegHeight = 3;
   holeRadius = 2;
   toothLength = 4;
   teethCount = ceil((radius + toothLength / 2) - 2);
@@ -73,9 +73,49 @@ module renderGear(radius, height, type) {
         }
 
         cylinder(r=holeRadius + wallThickness, h=height, center=true);
-        translate([0, 0, pegHeight / 2]) cylinder(r=holeRadius, h=height + pegHeight, center=true);
+        translate([0, 0, height / 2])
+          difference() {
+            rotate_extrude()
+              polygon(
+                [
+                  [0, 0],
+                  [holeRadius, 0],
+                  [holeRadius, pegHeight - 1],
+                  [holeRadius - 1, pegHeight],
+                  [0, pegHeight],
+                ]
+              );
+
+            difference() {
+              union() {
+                translate([0, 0, pegHeight / 2]) cube([.6, holeRadius * 2, pegHeight + 1], center=true);
+                translate([0, 0, pegHeight / 2]) cube([holeRadius * 2, .6, pegHeight + 1], center=true);
+              }
+
+              cylinder(r=holeRadius - .6, h=pegHeight + 2);
+            }
+          }
       }
-      translate([0, 0, -(height - pegHeight) / 2]) cylinder(r=holeRadius + .1, h=pegHeight + .2, center=true);
+
+      translate([0, 0, -height / 2])
+        rotate_extrude()
+          polygon(
+            [
+              [0, -1],
+              [holeRadius + .2, -1],
+              [holeRadius + .2, pegHeight - 1 + .2],
+              [holeRadius - 1 + .2, pegHeight + .2],
+              [0, pegHeight + .2],
+            ]
+          );
+    }
+
+    difference() {
+      union() {
+        translate([0, 0, -(height - pegHeight) / 2]) cube([.4, (holeRadius + .2) * 2, pegHeight], center=true);
+        translate([0, 0, -(height - pegHeight) / 2]) cube([(holeRadius + .2) * 2, .4, pegHeight], center=true);
+      }
+      translate([0, 0, -height / 2 - .5]) cylinder(r=holeRadius - .2, h=pegHeight + 1);
     }
   }
 }
