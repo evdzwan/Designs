@@ -1,44 +1,41 @@
-holeCount = 14;
-holeDepth = 4;
-holeSpacing = 2;
-holeWidth = 10;
+renderStand(tileWidth=15, tileCount=16, tileSpacing=3);
 
-standBorder = 4;
-standSize = 20;
-
-difference() {
-  renderBody();
-  renderFrontHoles();
-  renderRearHoles();
-}
-
-module renderBody() {
-  translate([0, holeCount * (holeWidth + holeSpacing) - holeSpacing + standBorder * 2, 0]) {
-    rotate([90, 0, 0]) {
-      linear_extrude(height=holeCount * (holeWidth + holeSpacing) - holeSpacing + standBorder * 2) {
-        polygon(
-          [
-            [0, 0],
-            [standSize - standBorder, 0],
-            [standSize - standBorder, standBorder],
-            [standBorder, standSize - standBorder],
-            [0, standSize - standBorder],
-          ]
-        );
+module renderStand(tileWidth, tileCount, tileSpacing, chamfer = 4) {
+  difference() {
+    translate([0, tileCount * (tileWidth + tileSpacing) + tileSpacing, 0]) {
+      rotate([90, 0, 0]) {
+        linear_extrude(height=tileCount * (tileWidth + tileSpacing) + tileSpacing) {
+          polygon(
+            [
+              [0, 0],
+              [tileWidth * 2 - chamfer * 2 + 1, 0],
+              [tileWidth * 2 - chamfer * 2 + 1, chamfer * 2],
+              [chamfer, tileWidth * 2 - chamfer],
+              [0, tileWidth * 2 - chamfer],
+            ]
+          );
+        }
       }
     }
-  }
-}
 
-module renderFrontHoles() {
-  for (i = [0:holeCount - 1]) {
-    translate([10, i * (holeWidth + holeSpacing) + standBorder, standBorder / 2]) rotate([0, -30, 0]) cube([holeDepth, holeWidth, standSize]);
-    translate([11, i * (holeWidth + holeSpacing) + standBorder, standBorder]) rotate([0, -30, 0]) cube([holeDepth, holeWidth, standSize]);
-  }
-}
+    for (i = [0:tileCount - 1]) {
+      translate([tileWidth - chamfer - 1, i * (tileWidth + tileSpacing) + tileSpacing + tileWidth / 2, tileWidth + chamfer]) {
+        rotate([0, -25, 0]) {
+          cube([tileWidth / 2, tileWidth, tileWidth * 2], center=true);
+        }
+      }
 
-module renderRearHoles() {
-  for (i = [0:holeCount - 1]) {
-    translate([-3.6, i * (holeWidth + holeSpacing) + standBorder, -standBorder]) rotate([0, -15, 0]) cube([holeDepth * 2, holeWidth, standSize]);
+      translate([tileWidth, i * (tileWidth + tileSpacing) + tileSpacing + tileWidth / 2, tileWidth + chamfer * 2]) {
+        rotate([0, -25, 0]) {
+          cube([tileWidth / 2, tileWidth, tileWidth * 2], center=true);
+        }
+      }
+
+      translate([0, i * (tileWidth + tileSpacing) + tileSpacing + tileWidth / 2, tileWidth / 2]) {
+        rotate([0, -12.5, 0]) {
+          cube([tileWidth / 2, tileWidth, tileWidth * 2], center=true);
+        }
+      }
+    }
   }
 }
