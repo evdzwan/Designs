@@ -20,7 +20,7 @@ module strip(tileSize = [50, 50, 8], tileSpacing = 8, tileInset = 2, tileCount =
 
           // magnets
           translate([-(tileSize[0] / 2 - 8), -(tileSize[1] / 2 - 8), -(size[2] - tileInset) / 2]) magnetHole();
-          translate([(tileSize[0] / 2 - 8), -(tileSize[1] / 2 - 8), -(size[2] - tileInset) / 2]) magnetHole();
+          translate([(tileSize[0] / 2 - 8), (tileSize[1] / 2 - 8), -(size[2] - tileInset) / 2]) magnetHole();
         }
       }
 
@@ -41,6 +41,6 @@ module strip(tileSize = [50, 50, 8], tileSpacing = 8, tileInset = 2, tileCount =
     // logos
     translate([radius, size[1] - radius, size[2]]) geometricLogo();
     translate([size[0] / 2, size[1] - radius - (logoOffset - radius) / 2, size[2]]) textualLogo();
-    translate([size[0] - radius, size[1] - radius, size[2]]) brandLogoPin();
+    translate([size[0] - radius, size[1] - radius, size[2]]) brandLogo();
   }
 }
