@@ -31,9 +31,9 @@ module base() {
     }
 
     // feet holes
-    translate([2 * foot_radius, 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
+    translate([3 * foot_radius, 3 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
     translate([1.5 * foot_radius, base_depth - 1.5 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
-    translate([base_width - 2 * foot_radius, 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
+    translate([base_width - 3 * foot_radius, 3 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
     translate([base_width - 1.5 * foot_radius, base_depth - 1.5 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
 
     // tile slots
