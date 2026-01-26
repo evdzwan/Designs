@@ -6,7 +6,7 @@ link();
 module link() {
   difference() {
     union() {
-      cylinder(r=link_outerradius - tolerance / 2, h=link_indent - tolerance, $fn=50);
+      cylinder(r=link_outerradius - tolerance, h=link_indent - tolerance, $fn=50);
       cylinder(r=link_outerradius - tolerance / 2, h=holder_width - tolerance, $fn=6);
     }
 

@@ -1,101 +1,64 @@
+include <const.scad>
 use <../shapes.scad>
 use <holder.scad>
-use <tile.scad>
 use <link.scad>
 use <rod.scad>
 
-base(count=2);
+base();
 
-module base(count) {
-  tile = tileSize();
-  tileSpacing = 1;
-  holderOffset = 14;
-  holderSpacing = 4;
-  tolerance = .2;
-  edge = 2;
-  foot = 2;
-  width = count * (tile[0] + tileSpacing + holderSpacing + edge * 2) + holderSpacing;
-
-  // base
-  color("teal") {
+module base() {
+  difference() {
+    // body
     intersection() {
+      roundedCube([base_width, base_depth, base_height + base_rodoffset + rod_radius + base_rodspacing], radius=base_radius, $fn=4);
       difference() {
         union() {
-          cube([width, 28, 4]);
-          difference() {
-            hull() {
-              translate([0, holderOffset, holderOffset]) rotate([90, 0, 90]) cylinder(r=8, h=width, $fn=50);
-              translate([0, holderOffset - 10, holderOffset - 8]) rotate([90, 0, 90]) cylinder(r=4, h=width, $fn=50);
-              translate([0, holderOffset - 10, holderOffset - 10]) rotate([90, 0, 90]) cylinder(r=4, h=width, $fn=50);
-              translate([0, holderOffset + 10, holderOffset]) rotate([90, 0, 90]) cylinder(r=4, h=width, $fn=50);
-              translate([0, holderOffset + 10, holderOffset - 10]) rotate([90, 0, 90]) cylinder(r=4, h=width, $fn=50);
-            }
-
-            translate([-.5, holderOffset, holderOffset]) rotate([0, 90, 0]) cylinder(r=4, h=width + 1, $fn=6);
-            for (i = [0:count - 1]) {
-              translate([i * (tile[0] + tileSpacing + holderSpacing + edge * 2) + holderSpacing - tolerance, -.5, 0]) {
-                rotate([90, 0, 90]) {
-                  linear_extrude(height=tile[0] + tileSpacing + holderSpacing + tolerance * 2) {
-                    polygon(
-                      [
-                        [0, 10],
-                        [5, 8],
-                        [5, 0],
-                        [24, 0],
-                        [24, 17.8],
-                        [28 + 1, 17.8],
-                        [28 + 1, 28],
-                        [0, 28],
-                      ]
-                    );
-                  }
-                }
-              }
-            }
-          }
-
-          *translate([0, holderOffset, holderOffset]) parts();
-        }
-
-        for (i = [0:count - 1]) {
-          translate([i * (tile[0] + tileSpacing + holderSpacing + edge * 2) + holderSpacing + edge, 28 - 4 + 1, -1]) {
-            rotate([90, 0, 90]) {
-              linear_extrude(height=tile[0] + tileSpacing) {
-                polygon(
-                  [
-                    [0, 0],
-                    [4, 0],
-                    [4, 16],
-                    [0, 3],
-                  ]
-                );
-              }
-            }
+          cube([base_width, base_depth, base_height]);
+          hull() {
+            translate([0, base_depth / 2, base_height + base_rodoffset]) rotate([0, 90, 0]) cylinder(r=rod_radius + base_rodspacing, h=base_width, $fn=50);
+            translate([0, rod_radius, rod_radius]) rotate([0, 90, 0]) cylinder(r=rod_radius, h=base_width, $fn=50);
+            translate([0, base_depth - rod_radius, base_height + base_rodoffset - 1]) rotate([0, 90, 0]) cylinder(r=rod_radius, h=base_width, $fn=50);
+            translate([0, base_depth - rod_radius, rod_radius]) cube([base_width, rod_radius, rod_radius]);
           }
         }
 
-        translate([foot * 2, foot * 2, -.5]) cylinder(r=foot, h=1 + .5, $fn=50);
-        translate([foot * 2, 25 - foot * 2, -.5]) cylinder(r=foot, h=1 + .5, $fn=50);
-        translate([width - foot * 2, foot * 2, -.5]) cylinder(r=foot, h=1 + .5, $fn=50);
-        translate([width - foot * 2, 25 - foot * 2, -.5]) cylinder(r=foot, h=1 + .5, $fn=50);
+        translate([base_edge / 2, base_depth / 2, base_height + base_rodoffset]) rotate([0, 90, 0]) cylinder(r=rod_radius, h=base_width - base_edge, $fn=6);
+        translate([3 * base_edge / 4, base_depth / 2, base_height + base_rodoffset + rod_radius]) rotate([0, 90, 0]) cylinder(r=rod_radius, h=base_width - 1.5 * base_edge, $fn=6);
+        translate([base_edge, base_edge, base_height]) cube([base_width - 2 * base_edge, base_depth - 2 * base_edge, base_rodoffset + rod_radius + base_rodspacing + shift]);
+        translate([base_edge, base_edge / 2, base_height + base_edge]) rotate([-base_holderanglemin, 0, 0]) cube([base_width - base_edge * 2, base_edge, base_edge]);
+        translate([base_edge, base_depth - base_edge, base_height + base_edge / 2 + base_rodoffset + tolerance]) rotate([-base_holderanglemin, 0, 0]) translate([0, -base_edge / 2, 0]) cube([base_width - base_edge * 2, base_edge * 2, base_edge]);
       }
-      
-      roundedCube([width, 28, 28], radius=2, $fn=50);
+    }
+
+    // feet holes
+    translate([2 * foot_radius, 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
+    translate([1.5 * foot_radius, base_depth - 1.5 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
+    translate([base_width - 2 * foot_radius, 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
+    translate([base_width - 1.5 * foot_radius, base_depth - 1.5 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=50);
+
+    // tile slots
+    translate([base_edge + holder_edge + tolerance, 0, 0]) {
+      for (i = [0:tile_count - 1]) {
+        hull() {
+          translate([i * holder_width, base_depth, 0]) rotate([0, 90, 0]) cylinder(d=base_indent, h=holder_width - 2 * holder_edge, $fn=6);
+          translate([i * holder_width, base_depth, 8]) rotate([0, 90, 0]) cylinder(d=base_indent, h=holder_width - 2 * holder_edge, $fn=6);
+          translate([i * holder_width, base_depth - base_indent * 1.5, 0]) cube([holder_width - 2 * holder_edge, base_indent, base_indent]);
+        }
+      }
     }
   }
 
-  module parts() {
-    // rod
-    rotate([-90, 0, 0]) color("magenta") rod(count);
+  *parts();
+}
 
-    // temp parts
-    for (i = [0:count - 1]) {
-      translate([i * (tile[0] + tileSpacing + holderSpacing + edge * 2) + holderSpacing, 0, 0]) {
-        angle = i * 80 / (count - 1);
-
-        rotate([-10 - angle, 0, 0]) {
-          color("olive") holder();
-          translate([.1, 0, 0]) rotate([0, 90, 0]) color("cyan") link();
+module parts() {
+  translate([base_edge / 2 + tolerance, base_depth / 2, base_height + base_rodoffset]) {
+    color("magenta") rotate([90, 0, 0]) rod();
+    translate([base_edge / 2, 0, 0]) {
+      for (i = [0:tile_count - 1]) {
+        rotate([-(base_holderanglemin + i * (base_holderanglemax - base_holderanglemin) / (tile_count - 1)), 0, 0]) {
+          color("cyan") translate([i * holder_width + tolerance / 2, 0, 0]) rotate([0, 90, 0]) link();
+          color("olive") translate([i * holder_width, 0, 0]) holder();
         }
       }
     }
