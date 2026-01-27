@@ -21,9 +21,10 @@ link_innerradius = 4;
 link_outerradius = 6;
 
 base_edge = 4;
-base_width = tile_count * (holder_width + 2 * tolerance) + 2 * base_edge;
+base_holderspacing = 1;
 base_holderanglemin = 10;
 base_holderanglemax = 100;
+base_width = tile_count * (holder_width + base_holderspacing + 2 * tolerance) + 2 * base_edge - base_holderspacing;
 base_rodoffset = 10;
 base_rodspacing = 2;
 base_height = 4;
