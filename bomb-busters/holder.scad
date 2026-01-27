@@ -33,4 +33,14 @@ module holder() {
       translate([holder_width, -shift / 2, holder_height]) rotate([0, 90, 90]) cylinder(r=holder_width - 4 * holder_edge, h=holder_depth + shift, $fn=50);
     }
   }
+
+  // spacers
+  difference() {
+    translate([-tolerance / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=(holder_connectorradius + link_outerradius) / 2 - tolerance, h=tolerance, $fn=50);
+    translate([-tolerance / 2 - shift / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=link_outerradius, h=tolerance + shift, $fn=50);
+  }
+  difference() {
+    translate([holder_width - tolerance / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=(holder_connectorradius + link_outerradius) / 2 - tolerance, h=tolerance, $fn=50);
+    translate([holder_width - tolerance / 2 - shift / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=link_outerradius, h=tolerance + shift, $fn=50);
+  }
 }

@@ -23,7 +23,7 @@ module base() {
         }
 
         translate([base_edge / 2, base_depth / 2, base_height + base_rodoffset]) rotate([0, 90, 0]) cylinder(r=rod_radius, h=base_width - base_edge, $fn=6);
-        translate([3 * base_edge / 4, base_depth / 2, base_height + base_rodoffset + rod_radius]) rotate([0, 90, 0]) cylinder(r=rod_radius, h=base_width - 1.5 * base_edge, $fn=6);
+        translate([(base_edge + 6 * tolerance) / 2, base_depth / 2, base_height + base_rodoffset + rod_radius]) rotate([0, 90, 0]) cylinder(r=rod_radius, h=base_width - (base_edge + 6 * tolerance), $fn=6);
         translate([base_edge, base_edge, base_height]) cube([base_width - 2 * base_edge, base_depth - 2 * base_edge, base_rodoffset + rod_radius + base_rodspacing + shift]);
         translate([base_edge, base_edge / 2, base_height + base_edge]) rotate([-base_holderanglemin, 0, 0]) cube([base_width - base_edge * 2, base_edge, base_edge]);
         translate([base_edge, base_depth - base_edge, base_height + base_edge / 2 + base_rodoffset + tolerance]) rotate([-base_holderanglemin, 0, 0]) translate([0, -base_edge / 2, 0]) cube([base_width - base_edge * 2, base_edge * 2, base_edge]);
@@ -57,8 +57,8 @@ module parts() {
     translate([base_edge / 2, 0, 0]) {
       for (i = [0:tile_count - 1]) {
         rotate([-(base_holderanglemin + i * (base_holderanglemax - base_holderanglemin) / (tile_count - 1)), 0, 0]) {
-          color("cyan") translate([i * holder_width + tolerance / 2, 0, 0]) rotate([0, 90, 0]) link();
-          color("olive") translate([i * holder_width, 0, 0]) holder();
+          color("cyan") translate([i * (holder_width + 2 * tolerance) + tolerance / 2, 0, 0]) rotate([0, 90, 0]) link();
+          color("olive") translate([i * (holder_width + 2 * tolerance), 0, 0]) holder();
         }
       }
     }
