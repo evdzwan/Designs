@@ -1,46 +1,105 @@
 include <const.scad>
-use <../shapes.scad>
 
-holder();
+$fn = 10;
+color("teal") holder();
 
 module holder() {
   difference() {
-    // base
-    translate([0, -holder_connectorradius + 2 * holder_edge, -holder_connectorradius]) {
-      rotate([90, 0, 0]) {
-        roundedCube([holder_width, holder_height, holder_depth], radius=holder_radius, $fn=4);
-        translate([0, 0, -2 * holder_connectorradius + 2 * holder_edge]) {
-          intersection() {
-            roundedCube([holder_width, 2 * holder_connectorradius + holder_edge, 2 * holder_connectorradius], radius=holder_radius, $fn=4);
-            union() {
-              translate([0, holder_connectorradius, holder_connectorradius]) rotate([90, 0, 90]) cylinder(r=holder_connectorradius, h=holder_width, $fn=6);
-              translate([0, 0, holder_connectorradius]) roundedCube([holder_width, holder_connectorradius, holder_connectorradius], radius=holder_radius, $fn=4);
+    union() {
+      rotate([90, 0, 90]) cylinder(r=holder_connector_radius - tolerance, h=holder_connector_width, center=true);
+      translate([-holder_connector_width / 2, 0, 0]) sphere(r=holder_connector_inset, $fn=8);
+      translate([holder_connector_width / 2, 0, 0]) sphere(r=holder_connector_inset, $fn=8);
+      translate([-holder_width / 2, -holder_depth - (holder_connector_radius - base_radius) - tolerance / 2, -holder_connector_offset]) {
+        cube([holder_width, holder_depth, holder_height]);
+
+        // head
+        translate([0, holder_depth, holder_height - 3 * holder_head]) {
+          rotate([90, 0, 90]) {
+            linear_extrude(holder_width) {
+              polygon(
+                [
+                  [0, 0],
+                  [holder_head, 2 * holder_head],
+                  [holder_head, 3 * holder_head],
+                  [0, 3 * holder_head],
+                ]
+              );
+            }
+          }
+        }
+
+        // foot
+        translate([0, 0, 0]) {
+          rotate([90, 0, 90]) {
+            linear_extrude(holder_width) {
+              polygon(
+                [
+                  [0, 0],
+                  [-holder_foot, 0],
+                  [-holder_foot, holder_foot],
+                  [0, 3 * holder_foot],
+                ]
+              );
             }
           }
         }
       }
     }
 
-    // link hole
-    translate([-shift / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=link_outerradius, h=holder_width + shift, $fn=6);
-    translate([-shift, 0, 0]) rotate([0, 90, 0]) cylinder(r=link_outerradius, h=link_indent + shift, $fn=50);
-
-    // tile hole
-    translate([0, -(holder_connectorradius + holder_depth) + 2 * holder_edge, -holder_connectorradius]) {
+    // tile slot
+    translate([-holder_width / 2, -holder_depth - (holder_connector_radius - base_radius) - tolerance / 2, -holder_connector_offset]) {
       translate([holder_edge, holder_edge, holder_edge]) cube([holder_width - 2 * holder_edge, holder_depth - 2 * holder_edge, holder_height - 2 * holder_edge]);
-      translate([-shift / 2, -shift / 2, 2 * holder_connectorradius]) cube([holder_width + shift, 1.5 * holder_edge + shift, holder_height - 2 * holder_edge]);
-      translate([2 * holder_edge, -shift / 2, 2 * holder_edge]) cube([holder_width - 4 * holder_edge, holder_edge + shift, 2 * (holder_connectorradius - holder_edge) + shift]);
-      translate([holder_width, -shift / 2, holder_height]) rotate([0, 90, 90]) cylinder(r=holder_width - 4 * holder_edge, h=holder_depth + shift, $fn=50);
+      translate([-shift / 2, -shift, holder_height / 3]) cube([holder_width + shift, holder_depth - 2 * holder_edge + shift, 2 * holder_height / 3 - 3 * holder_edge]);
+
+      translate([holder_edge, -shift / 2, holder_height - 3 * holder_edge - shift]) cube([holder_width - 2 * holder_edge, holder_edge + shift, 2 * holder_edge + shift]);
+      translate([-shift / 2, -shift, holder_height - 3 * holder_edge - shift / 2]) cube([holder_width + shift, holder_edge + shift, 3 * holder_edge + shift]);
+
+      translate([3 * holder_edge, -2 * holder_foot - shift / 2, 3 * holder_edge]) cube([holder_width - 6 * holder_edge, 2 * holder_foot + holder_edge + shift, holder_height / 3 - 3 * holder_edge + shift]);
     }
   }
 
-  // spacers
-  difference() {
-    translate([-tolerance / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=(holder_connectorradius + link_outerradius) / 2 - tolerance, h=tolerance, $fn=50);
-    translate([-tolerance / 2 - shift / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=link_outerradius, h=tolerance + shift, $fn=50);
-  }
-  difference() {
-    translate([holder_width - tolerance / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=(holder_connectorradius + link_outerradius) / 2 - tolerance, h=tolerance, $fn=50);
-    translate([holder_width - tolerance / 2 - shift / 2, 0, 0]) rotate([0, 90, 0]) cylinder(r=link_outerradius, h=tolerance + shift, $fn=50);
+  // edge chamfers
+  translate([-holder_width / 2, -holder_depth - (holder_connector_radius - base_radius) - tolerance / 2, -holder_connector_offset]) {
+    translate([holder_edge, holder_depth - holder_edge, holder_height - 2 * holder_edge]) {
+      rotate([90, 0, 90]) {
+        linear_extrude(holder_width - 2 * holder_edge) {
+          polygon(
+            [
+              [0, 0],
+              [-2 * holder_edge + tolerance / 2, 2 * holder_edge],
+              [0, 2 * holder_edge],
+            ]
+          );
+        }
+      }
+    }
+
+    translate([0, holder_depth - 2 * holder_edge, holder_height - 5 * holder_edge]) {
+      rotate([90, 0, 90]) {
+        linear_extrude(holder_edge) {
+          polygon(
+            [
+              [0, 0],
+              [-2 * holder_edge + tolerance / 2, 2 * holder_edge],
+              [0, 2 * holder_edge],
+            ]
+          );
+        }
+      }
+    }
+
+    translate([holder_width - holder_edge, holder_depth - 2 * holder_edge, holder_height - 5 * holder_edge]) {
+      rotate([90, 0, 90]) {
+        linear_extrude(holder_edge) {
+          polygon(
+            [
+              [0, 0],
+              [-2 * holder_edge + tolerance / 2, 2 * holder_edge],
+              [0, 2 * holder_edge],
+            ]
+          );
+        }
+      }
+    }
   }
 }
