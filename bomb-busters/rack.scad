@@ -12,11 +12,10 @@ holder_width = tile_width + 2 * holder_edge + 2 * tolerance;
 holder_height = tile_height + 2 * holder_edge + 2 * tolerance;
 holder_depth = tile_depth + holder_edge + 2 * tolerance;
 
-translate([holder_width / 2, holder_height / 2, holder_depth / 2]) {
-  for (i = [0:tile_count - 1]) {
-    color("teal") translate([i * (holder_width + holder_spacing), 0, 0]) holder();
-    color("cyan") translate([i * (holder_width + holder_spacing), 0, (holder_depth - tile_depth) / 2]) tile();
-  }
+for (i = [0:tile_count - 1]) {
+  angle = i * 90 / max(tile_count - 1, 1);
+  color("teal") translate([i * (holder_width + holder_spacing), 0, 0]) rotate([angle, 0, 0]) translate([holder_width / 2, holder_height / 2, holder_depth / 2]) holder();
+  color("cyan") translate([i * (holder_width + holder_spacing), 0, (holder_depth - tile_depth) / 2]) rotate([angle, 0, 0]) translate([holder_width / 2, holder_height / 2, holder_depth / 2]) tile();
 }
 
 module holder() {
