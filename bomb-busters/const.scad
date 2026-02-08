@@ -1,31 +1,27 @@
-tolerance = .4;
+tolerance = .2;
 shift = 1;
 
 tile_width = 14;
-tile_height = 46;
-tile_indicator_height = 22;
+tile_height = 45;
 tile_depth = 2;
 
-holder_count = 7;
-holder_angle_min = 10;
-holder_angle_max = 100;
-holder_connector_offset = 15;
-holder_connector_radius = 4;
-holder_connector_inset = 1.5;
-holder_connector_width = 8;
-holder_edge = 2;
-holder_head = 4;
-holder_foot = 4;
-holder_width = tile_width + 2 * (holder_edge + tolerance);
-holder_depth = tile_depth + 2 * (holder_edge + 2 * tolerance);
-holder_height = tile_height + 2 * (holder_edge + tolerance);
+holder_edge = 1;
+holder_count = 5;
+holder_angle = 10;
+holder_connector_radius = 2;
+holder_connector_offset = 8;
+holder_width = tile_width + 2 * holder_edge + 2 * tolerance;
+holder_height = 25;
+holder_depth = tile_depth + 3 * holder_edge + 2 * tolerance;
 
-foot_width = 10;
-foot_radius = 1.6;
+base_link = 4;
+base_slot = 22 + 2 * tolerance;
+base_spacing = 2;
+base_rod_radius = 1;
+base_rod_offset = cos(holder_angle) * (holder_connector_radius + holder_connector_offset);
+base_width = holder_count * (holder_width + base_spacing);
+base_height = 2;
+base_depth = holder_height;
 
-base_width = holder_count * (holder_width + 2 * tolerance);
-base_depth = 25;
-base_thickness = 2;
-base_scale_diff = .1;
-base_radius = 2;
-base_foot = 7;
+foot_radius = 2;
+foot_height = 1;
