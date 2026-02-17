@@ -10,7 +10,7 @@ module base() {
     cube([base_width, base_depth, base_height]);
 
     // link slot
-    translate([3 * base_link / 4, base_depth / 2, base_height / 2]) scale(1 + tolerance / 2) link();
+    translate([3 * base_link / 4, base_depth / 2, base_height / 2]) scale(1 + tolerance / 4) link();
 
     // holder slots
     for (i = [0:holder_count - 1]) {
@@ -23,10 +23,10 @@ module base() {
     }
 
     // feet slots
-    translate([3 * foot_radius, 3 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
-    translate([3 * foot_radius, base_depth - 3 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
-    translate([base_width - 3 * foot_radius, 3 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
-    translate([base_width - 3 * foot_radius, base_depth - 3 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
+    translate([2 * foot_radius, 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
+    translate([2 * foot_radius, base_depth - 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
+    translate([base_width - 2 * foot_radius, 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
+    translate([base_width - 2 * foot_radius, base_depth - 2 * foot_radius, -shift]) cylinder(r=foot_radius, h=foot_height + shift, $fn=24);
   }
 
   // connector
@@ -50,7 +50,7 @@ module base() {
   // link
   difference() {
     translate([base_width + 3 * base_link / 4, base_depth / 2, base_height / 2]) link();
-    translate([base_width + base_link / 2 + base_spacing / 2 - tolerance, base_depth / 2, base_height]) cube([base_link, base_link + shift, 4 * tolerance], center=true);
+    translate([base_width + base_link / 2 + base_spacing / 2, base_depth / 2, base_height]) cube([base_link, base_link + shift, 6 * tolerance], center=true);
   }
 }
 

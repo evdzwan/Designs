@@ -1,4 +1,13 @@
 $fn = 100;
 
-cube([60, 10, .6], center=true);
-cube([10, 60, .6], center=true);
+hull() {
+  translate([-25, 0, 0]) cylinder(d=10, h=.6, $fn=50);
+  translate([25, 0, 0]) cylinder(d=10, h=.6, $fn=50);
+}
+
+rotate([0, 0, 90]) {
+  hull() {
+    translate([-25, 0, 0]) cylinder(d=10, h=.6, $fn=50);
+    translate([25, 0, 0]) cylinder(d=10, h=.6, $fn=50);
+  }
+}

@@ -14,7 +14,7 @@ holder_width = tile_width + 2 * holder_edge + 2 * tolerance;
 holder_height = 25;
 holder_depth = tile_depth + 3 * holder_edge + 2 * tolerance;
 
-base_link = 4;
+base_link = 8;
 base_slot = 22 + 2 * tolerance;
 base_spacing = 2;
 base_rod_radius = 1;
@@ -24,4 +24,4 @@ base_height = 2;
 base_depth = holder_height;
 
 foot_radius = 2;
-foot_height = 1;
+foot_height = .4;
