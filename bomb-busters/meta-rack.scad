@@ -76,13 +76,12 @@ module holder() {
         difference() {
           union() {
             translate([0, -2 * holder_connector_radius - holder_depth / 2, holder_height / 2 - holder_connector_offset - sin(holder_angle_min) * 2 * holder_connector_radius]) cube([holder_width, holder_depth, holder_height], center=true);
-
             // bottom bit (todo)
-            translate([0, -2 * holder_connector_radius - holder_depth / 2 + cos(holder_angle_min) * holder_depth / 2, -holder_connector_offset - sin(holder_angle_min) * 2 * holder_connector_radius + sin(holder_angle_min) * holder_depth / 2]) rotate([holder_angle_min, 0, 0]) translate([0, -holder_depth / 2, 0]) cube([holder_width, cos(holder_angle_min) * holder_depth, sin(holder_angle_min) * holder_depth], center=true);
-
+            translate([0, -2 * holder_connector_radius - holder_depth / 2 + cos(holder_angle_min) * holder_depth / 2, -holder_connector_offset - sin(holder_angle_min) * 2 * holder_connector_radius + sin(holder_angle_min) * holder_depth / 2]) rotate([holder_angle_min, 0, 0]) translate([0, -holder_depth / 2+.28, 0]) cube([holder_width, cos(holder_angle_min) * holder_depth-.56, sin(holder_angle_min) * holder_depth], center=true);
             translate([0, -2 * holder_connector_radius - holder_depth / 2, holder_height / 2 - holder_connector_offset - sin(holder_angle_min) * 2 * holder_connector_radius]) {
               hull() {
-                translate([0, -holder_depth / 2, -(holder_height / 2 - holder_depth)]) rotate([0, 90, 0]) cylinder(r=holder_depth, h=holder_width, center=true, $fn=24);
+                // bottom bit (todo)
+                translate([0, -holder_depth / 2, -(holder_height / 2 - holder_depth) - .56]) rotate([0, 90, 0]) cylinder(r=holder_depth, h=holder_width, center=true, $fn=24);
                 translate([0, -holder_depth / 2, -(holder_height / 2 - 4 * holder_depth)]) rotate([0, 90, 0]) cylinder(r=holder_depth, h=holder_width, center=true, $fn=24);
               }
             }
