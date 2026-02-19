@@ -7,7 +7,7 @@ tile_depth = 2;
 
 holder_edge = 2;
 holder_count = 5;
-holder_spacing = 4;
+holder_spacing = 2;
 holder_angle_min = 10;
 holder_angle_max = 100;
 holder_connector_radius = 2;
@@ -15,7 +15,7 @@ holder_connector_offset = 12;
 holder_connector_inner_width = 8;
 holder_connector_outer_width = 14;
 holder_width = tile_width + 2 * holder_edge + 4 * tolerance;
-holder_height = tile_height + 3 * holder_edge + 4 * tolerance;
+holder_height = tile_height + 2 * holder_edge + 8 * tolerance;
 holder_depth = tile_depth + holder_edge + 4 * tolerance;
 
 base_link_radius = 2;
