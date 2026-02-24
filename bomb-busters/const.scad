@@ -23,6 +23,8 @@ base_link_height = base_link_radius;
 base_radius = 2 * holder_connector_radius;
 base_width = holder_count * (holder_width + holder_spacing);
 base_depth = holder_height - 5 * holder_edge - holder_connector_offset;
+base_indicator_height = 22 + 4 * tolerance; //todo make adaptive with minimum
+base_indicator_depth = 2; //todo make adaptive with minimum
 
 foot_radius = 4;
 foot_width = base_depth - 2 * foot_radius;

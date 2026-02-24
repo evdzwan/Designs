@@ -22,7 +22,25 @@ module base() {
 
             // indicator slots
             for (i = [0:holder_count - 1]) {
-              translate([(i + .5) * (holder_width + holder_spacing), 4 * foot_radius - base_radius + foot_width + base_radius / 2, 0]) translate([0, -base_radius / 2, 0]) rotate([-2 * holder_angle_min, 0, 0]) translate([0, base_radius / 2, 0]) cube([tile_width + 4 * tolerance, base_radius, 2 * holder_connector_offset], center=true);
+              translate([0, -4.4, 4]) {
+                hull() {
+                  translate([-(tile_width + 4 * tolerance - 2) / 2, cos(holder_angle_min) * base_indicator_height / 2 - 1, -sin(holder_angle_min) * base_indicator_height / 2]) translate([(i + .5) * (holder_width + holder_spacing), -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+                  translate([(tile_width + 4 * tolerance - 2) / 2, cos(holder_angle_min) * base_indicator_height / 2 - 1, -sin(holder_angle_min) * base_indicator_height / 2]) translate([(i + .5) * (holder_width + holder_spacing), -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+
+                  translate([-(tile_width + 4 * tolerance - 2) / 2, -cos(holder_angle_min) * (base_indicator_height - 4) / 2 - 1, sin(holder_angle_min) * (base_indicator_height - 4) / 2]) translate([(i + .5) * (holder_width + holder_spacing), -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+                  translate([(tile_width + 4 * tolerance - 2) / 2, -cos(holder_angle_min) * (base_indicator_height - 4) / 2 - 1, sin(holder_angle_min) * (base_indicator_height - 4) / 2]) translate([(i + .5) * (holder_width + holder_spacing), -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+                }
+              }
+            }
+
+            //todo use rounding/hull
+            translate([0, base_indicator_height / 2 - 4.4, 2.6]) {
+              hull() {
+                translate([holder_spacing + 1, -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+                translate([base_width - (holder_spacing + 1), -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+                translate([0, -cos(holder_angle_min) * base_indicator_height, sin(holder_angle_min) * base_indicator_height]) translate([base_width - (holder_spacing + 1), -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+                translate([0, -cos(holder_angle_min) * base_indicator_height, sin(holder_angle_min) * base_indicator_height]) translate([holder_spacing + 1, -(2 * holder_connector_radius + tolerance) + sin(holder_angle_max) * base_indicator_height, cos(holder_angle_max) * base_indicator_height]) translate([0, 2 * holder_connector_radius + tolerance, holder_connector_offset]) rotate([-holder_angle_min, 0, 0]) cylinder(r=1, h=base_indicator_depth, center=true, $fn=24);
+              }
             }
           }
         }
