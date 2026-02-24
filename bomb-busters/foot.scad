@@ -3,14 +3,16 @@ include <const.scad>
 foot();
 
 module foot() {
-  hull() {
-    translate([-foot_width / 2, 0, 0]) foot_node();
-    translate([0, foot_width / 2, 0]) foot_node();
-  }
+  foot_offset = (cos(holder_angle) * base_depth + 2 * sin(holder_angle) * holder_connector_offset + 2 * base_radius - 4 * foot_radius) / 2;
 
   hull() {
-    translate([foot_width / 2, 0, 0]) foot_node();
-    translate([0, foot_width / 2, 0]) foot_node();
+    translate([foot_offset, 0, 0]) foot_node();
+    translate([0, -foot_offset, 0]) foot_node();
+  }
+  
+  hull() {
+    translate([foot_offset, 0, 0]) foot_node();
+    translate([0, foot_offset, 0]) foot_node();
   }
 }
 
