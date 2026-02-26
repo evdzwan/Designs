@@ -3,5 +3,10 @@ include <const.scad>
 tile();
 
 module tile() {
-  cube([tile_width, tile_height, tile_depth], center=true);
+  hull() {
+    translate([-(tile_width / 2 - tile_radius), -(tile_height / 2 - tile_radius), 0]) cylinder(r=tile_radius, h=tile_depth, center=true, $fn=24);
+    translate([tile_width / 2 - tile_radius, -(tile_height / 2 - tile_radius), 0]) cylinder(r=tile_radius, h=tile_depth, center=true, $fn=24);
+    translate([tile_width / 2 - tile_radius, tile_height / 2 - tile_radius, 0]) cylinder(r=tile_radius, h=tile_depth, center=true, $fn=24);
+    translate([-(tile_width / 2 - tile_radius), tile_height / 2 - tile_radius, 0]) cylinder(r=tile_radius, h=tile_depth, center=true, $fn=24);
+  }
 }

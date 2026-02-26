@@ -24,7 +24,7 @@ holder_depth = tile_depth + holder_edge + 4 * tolerance;
 base_radius = 4;
 base_spacing = 2;
 base_width = tile_count * (holder_width + base_spacing);
-base_depth = 32;
+base_depth = holder_height - 5 * holder_edge - holder_connector_offset + 2 * tolerance;
 
 link_radius = 2;
 link_height = link_radius;
